@@ -1,0 +1,437 @@
+set NODES := AKL NPL TPO BPE HAY BEN ROX;
+set GENERATORS := HLYA HLYB MDN OTA SDN NPLA NPLB SFD TCC WKO GEO
+                  NIO WHI SIO WTK MAN ROX; 
+                 
+set NODE_GEN :=
+    AKL HLYA
+    AKL HLYB
+    AKL MDN
+    AKL OTA
+    AKL SDN
+    NPL NPLA
+    NPL NPLB
+    NPL SFD
+    NPL TCC
+    TPO WKO
+    TPO GEO
+    BPE NIO
+    BPE WHI
+    BEN SIO
+    BEN WTK
+    ROX MAN
+    ROX ROX;  
+
+param LOADS :=
+   AKL  1179
+   NPL  173
+   TPO  1260.71
+   BPE  172.84
+   HAY  559.15
+   BEN  687.62
+   ROX  831.8;
+
+param GCOST :=           
+    HLYA   25
+    HLYB   26
+    MDN   200
+    OTA    90
+    SDN    99
+    NPLA    0
+    NPLB    0
+    SFD     0
+    TCC     0
+    WKO    27
+    GEO     1
+    NIO    24
+    WHI   140
+    SIO     1
+    WTK    20
+    MAN     8
+    ROX     9;
+ 
+param GCAP :=
+    HLYA   490
+    HLYB   490
+    MDN    120
+    OTA     90
+    SDN    110
+    NPLA   2000
+    NPLB   2000
+    SFD    208
+    TCC    340
+    WKO    600
+    GEO    257
+    NIO    550
+    WHI    162
+    SIO    100
+    WTK   1740 
+    MAN    590
+    ROX    800;
+
+set LINK :=
+      AKL  NPL 
+      AKL  TPO
+      NPL  AKL
+      NPL  BPE
+      TPO  AKL
+      TPO  BPE
+      BPE  NPL
+      BPE  TPO
+      BPE  HAY
+      HAY  BPE
+      HAY  BEN
+      BEN  HAY
+      BEN  ROX
+      ROX  BEN;
+
+set LINK2 :=
+      AKL  NPL 
+      AKL  TPO
+      NPL  BPE
+      TPO  BPE
+      BPE  HAY
+      BEN  ROX;
+
+#set LOOP :=
+#      AKL  NPL
+#      NPL  BPE
+#      BPE  TPO
+#      TPO  AKL;
+
+param X :=
+      AKL  NPL  0.0006
+      AKL  TPO  0.00008
+      NPL  AKL  0.0006
+      NPL  BPE  0.00003
+      TPO  AKL  0.00008
+      TPO  BPE  0.0011
+      BPE  NPL  0.00003
+      BPE  TPO  0.0011
+      BPE  HAY  0.000073
+      HAY  BPE  0.000073
+      HAY  BEN  0
+      BEN  HAY  0
+      BEN  ROX  0.00125
+      ROX  BEN  0.00125;
+
+param R :=
+      AKL  NPL  0.0001
+      AKL  TPO  0.00001
+      NPL  AKL  0.0001
+      NPL  BPE  0.000007
+      TPO  AKL  0.00001
+      TPO  BPE  0.0002
+      BPE  NPL  0.000007
+      BPE  TPO  0.0002
+      BPE  HAY  0.000012
+      HAY  BPE  0.000012
+      HAY  BEN  0.00014
+      BEN  HAY  0.00014
+      BEN  ROX  0.00027
+      ROX  BEN  0.00027;
+  
+param U :=
+      AKL  NPL  2000
+      AKL  TPO     0
+      NPL  AKL  2000
+      NPL  BPE   800
+      TPO  AKL     0
+      TPO  BPE   500
+      BPE  NPL   800
+      BPE  TPO   500
+      BPE  HAY     0
+      HAY  BPE     0
+      HAY  BEN  1240
+      BEN  HAY  1240
+      BEN  ROX  1000
+      ROX  BEN  1000;
+
+param npieces :=
+      AKL  NPL  10
+      AKL  TPO  10
+      NPL  AKL  10 
+      NPL  BPE  10 
+      TPO  AKL  10
+      TPO  BPE  10
+      BPE  NPL  10
+      BPE  TPO  10 
+      BPE  HAY  10
+      HAY  BPE  10
+      HAY  BEN  10
+      BEN  HAY  10
+      BEN  ROX  10
+      ROX  BEN  10  ;
+
+param breakpoint :=
+      AKL  NPL  1   92   
+      AKL  NPL  2   184
+      AKL  NPL  3   276
+      AKL  NPL  4   368
+      AKL  NPL  5   460
+      AKL  NPL  6   552
+      AKL  NPL  7   644
+      AKL  NPL  8   736
+      AKL  NPL  9   828      
+      AKL  TPO  1   120
+      AKL  TPO  2   240
+      AKL  TPO  3   360
+      AKL  TPO  4   480
+      AKL  TPO  5   600
+      AKL  TPO  6   720
+      AKL  TPO  7   840
+      AKL  TPO  8   960
+      AKL  TPO  9   1080
+      NPL  AKL  1   92         
+      NPL  AKL  2   184
+      NPL  AKL  3   276
+      NPL  AKL  4   368
+      NPL  AKL  5   460
+      NPL  AKL  6   552
+      NPL  AKL  7   644
+      NPL  AKL  8   736
+      NPL  AKL  9   828         
+      NPL  BPE  1    70         
+      NPL  BPE  2   140
+      NPL  BPE  3   210
+      NPL  BPE  4   280
+      NPL  BPE  5   350
+      NPL  BPE  6   420
+      NPL  BPE  7   490
+      NPL  BPE  8   560
+      NPL  BPE  9   630         
+      TPO  AKL  1   120
+      TPO  AKL  2   240
+      TPO  AKL  3   360
+      TPO  AKL  4   480
+      TPO  AKL  5   600
+      TPO  AKL  6   720
+      TPO  AKL  7   840
+      TPO  AKL  8   960
+      TPO  AKL  9   1080
+      TPO  BPE  1   120
+      TPO  BPE  2   240
+      TPO  BPE  3   360
+      TPO  BPE  4   480
+      TPO  BPE  5   600
+      TPO  BPE  6   720
+      TPO  BPE  7   840
+      TPO  BPE  8   960
+      TPO  BPE  9   1080
+      BPE  NPL  1    70
+      BPE  NPL  2   140
+      BPE  NPL  3   210
+      BPE  NPL  4   280
+      BPE  NPL  5   350
+      BPE  NPL  6   420
+      BPE  NPL  7   490
+      BPE  NPL  8   560
+      BPE  NPL  9   630
+      BPE  TPO  1   120
+      BPE  TPO  2   240
+      BPE  TPO  3   360
+      BPE  TPO  4   480
+      BPE  TPO  5   600
+      BPE  TPO  6   720
+      BPE  TPO  7   840
+      BPE  TPO  8   960
+      BPE  TPO  9   1080
+      BPE  HAY  1   170
+      BPE  HAY  2   340
+      BPE  HAY  3   510
+      BPE  HAY  4   680
+      BPE  HAY  5   850
+      BPE  HAY  6   1020
+      BPE  HAY  7   1190
+      BPE  HAY  8   1360
+      BPE  HAY  9   1530
+      HAY  BPE  1   170
+      HAY  BPE  2   340
+      HAY  BPE  3   510
+      HAY  BPE  4   680
+      HAY  BPE  5   850
+      HAY  BPE  6   1020
+      HAY  BPE  7   1190
+      HAY  BPE  8   1360
+      HAY  BPE  9   1530
+      HAY  BEN  1   124
+      HAY  BEN  2   248
+      HAY  BEN  3   372
+      HAY  BEN  4   496
+      HAY  BEN  5   620
+      HAY  BEN  6   744
+      HAY  BEN  7   868
+      HAY  BEN  8   992
+      HAY  BEN  9   1116
+      BEN  HAY  1   124
+      BEN  HAY  2   248
+      BEN  HAY  3   372
+      BEN  HAY  4   496
+      BEN  HAY  5   620
+      BEN  HAY  6   744
+      BEN  HAY  7   868
+      BEN  HAY  8   992
+      BEN  HAY  9   1116
+      BEN  ROX  1   100
+      BEN  ROX  2   200
+      BEN  ROX  3   300
+      BEN  ROX  4   400
+      BEN  ROX  5   500
+      BEN  ROX  6   600
+      BEN  ROX  7   700
+      BEN  ROX  8   800
+      BEN  ROX  9   900
+      ROX  BEN  1   100
+      ROX  BEN  2   200
+      ROX  BEN  3   300
+      ROX  BEN  4   400
+      ROX  BEN  5   500
+      ROX  BEN  6   600
+      ROX  BEN  7   700
+      ROX  BEN  8   800
+      ROX  BEN  9   900;
+
+param slope :=
+      AKL  NPL  1   0.0071   
+      AKL  NPL  2   0.0260
+      AKL  NPL  3   0.0450
+      AKL  NPL  4   0.0639
+      AKL  NPL  5   0.0828
+      AKL  NPL  6   0.1017
+      AKL  NPL  7   0.1206
+      AKL  NPL  8   0.1395
+      AKL  NPL  9   0.1584
+      AKL  NPL  10  0.1773     
+      AKL  TPO  1   0.0009
+      AKL  TPO  2   0.0034
+      AKL  TPO  3   0.0058
+      AKL  TPO  4   0.0082
+      AKL  TPO  5   0.0107
+      AKL  TPO  6   0.0131
+      AKL  TPO  7   0.0155
+      AKL  TPO  8   0.0180
+      AKL  TPO  9   0.0204
+      AKL  TPO  10  0.0229
+      NPL  AKL  1   0.0071         
+      NPL  AKL  2   0.0260
+      NPL  AKL  3   0.0450
+      NPL  AKL  4   0.0639
+      NPL  AKL  5   0.0828
+      NPL  AKL  6   0.1017
+      NPL  AKL  7   0.1206
+      NPL  AKL  8   0.1395
+      NPL  AKL  9   0.1584
+      NPL  AKL  10  0.1773       
+      NPL  BPE  1   0.0004      
+      NPL  BPE  2   0.0014
+      NPL  BPE  3   0.0025
+      NPL  BPE  4   0.0035
+      NPL  BPE  5   0.0045
+      NPL  BPE  6   0.0056
+      NPL  BPE  7   0.0066
+      NPL  BPE  8   0.0076
+      NPL  BPE  9   0.0087
+      NPL  BPE  10  0.0097       
+      TPO  AKL  1   0.0009
+      TPO  AKL  2   0.0034
+      TPO  AKL  3   0.0058
+      TPO  AKL  4   0.0082
+      TPO  AKL  5   0.0107
+      TPO  AKL  6   0.0131
+      TPO  AKL  7   0.0155
+      TPO  AKL  8   0.0180
+      TPO  AKL  9   0.0204
+      TPO  AKL  10  0.0229
+      TPO  BPE  1   0.0187
+      TPO  BPE  2   0.0683
+      TPO  BPE  3   0.1178
+      TPO  BPE  4   0.1674
+      TPO  BPE  5   0.2170
+      TPO  BPE  6   0.2666
+      TPO  BPE  7   0.3162
+      TPO  BPE  8   0.3658
+      TPO  BPE  9   0.4154
+      TPO  BPE  10  0.4650
+      BPE  NPL  1   0.0004
+      BPE  NPL  2   0.0014
+      BPE  NPL  3   0.0025
+      BPE  NPL  4   0.0035
+      BPE  NPL  5   0.0045
+      BPE  NPL  6   0.0056
+      BPE  NPL  7   0.0066
+      BPE  NPL  8   0.0076
+      BPE  NPL  9   0.0087
+      BPE  NPL  10  0.0097
+      BPE  TPO  1   0.0187
+      BPE  TPO  2   0.0683
+      BPE  TPO  3   0.1178
+      BPE  TPO  4   0.1674
+      BPE  TPO  5   0.2170
+      BPE  TPO  6   0.2666
+      BPE  TPO  7   0.3162
+      BPE  TPO  8   0.3658
+      BPE  TPO  9   0.4154
+      BPE  TPO  10  0.4650
+      BPE  HAY  1   0.0016
+      BPE  HAY  2   0.0058
+      BPE  HAY  3   0.0100
+      BPE  HAY  4   0.0141
+      BPE  HAY  5   0.0183
+      BPE  HAY  6   0.0225
+      BPE  HAY  7   0.0267
+      BPE  HAY  8   0.0309
+      BPE  HAY  9   0.0351
+      BPE  HAY  10  0.0393
+      HAY  BPE  1   0.0016
+      HAY  BPE  2   0.0058
+      HAY  BPE  3   0.0100
+      HAY  BPE  4   0.0141
+      HAY  BPE  5   0.0183
+      HAY  BPE  6   0.0225
+      HAY  BPE  7   0.0267
+      HAY  BPE  8   0.0309
+      HAY  BPE  9   0.0351
+      HAY  BPE  10  0.0393
+      HAY  BEN  1   0.0131
+      HAY  BEN  2   0.0478
+      HAY  BEN  3   0.0825
+      HAY  BEN  4   0.1172
+      HAY  BEN  5   0.1520
+      HAY  BEN  6   0.1867
+      HAY  BEN  7   0.2214
+      HAY  BEN  8   0.2561
+      HAY  BEN  9   0.2908
+      HAY  BEN  10  0.3256
+      BEN  HAY  1   0.0131
+      BEN  HAY  2   0.0478
+      BEN  HAY  3   0.0825
+      BEN  HAY  4   0.1172
+      BEN  HAY  5   0.1520
+      BEN  HAY  6   0.1867
+      BEN  HAY  7   0.2214
+      BEN  HAY  8   0.2561
+      BEN  HAY  9   0.2908
+      BEN  HAY  10  0.3256
+      BEN  ROX  1   0.0213
+      BEN  ROX  2   0.0778
+      BEN  ROX  3   0.1343
+      BEN  ROX  4   0.1909
+      BEN  ROX  5   0.2474
+      BEN  ROX  6   0.3039
+      BEN  ROX  7   0.3604
+      BEN  ROX  8   0.4169
+      BEN  ROX  9   0.4735
+      BEN  ROX  10  0.5300
+      ROX  BEN  1   0.0213
+      ROX  BEN  2   0.0778
+      ROX  BEN  3   0.1343
+      ROX  BEN  4   0.1909
+      ROX  BEN  5   0.2474
+      ROX  BEN  6   0.3039
+      ROX  BEN  7   0.3604
+      ROX  BEN  8   0.4169
+      ROX  BEN  9   0.4735
+      ROX  BEN  10  0.5300 ;
+
+
+
+                 

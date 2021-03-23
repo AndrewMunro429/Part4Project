@@ -1,0 +1,10 @@
+reset;
+
+model dc_piece_theta2_improve.mod;
+
+data dc_piece_theta2_improve.dat;
+
+option solver cplex;
+solve;
+
+display total_cost;
